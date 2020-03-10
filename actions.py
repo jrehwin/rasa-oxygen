@@ -7,20 +7,27 @@
 import json
 import requests
 
+from http import HTTPStatus
+
 from typing import Any, Text, Dict, List, Union, Optional
+
+from rasa.constants import DEFAULT_CREDENTIALS_PATH
+from rasa.utils.io import read_config_file
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.forms import FormAction
-from rasa_sdk.events import UserUtteranceReverted
+from rasa_sdk.events import UserUtteranceReverted, SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 
-database = 'hcoxygen-519f'
-collection = 'orderables'
-apikey = '5c2b8e89ec223445bf170197806e7c0cb0924'
+credentials_file = DEFAULT_CREDENTIALS_PATH
+all_credentials = read_config_file(credentials_file)
+restdb_credentials = all_credentials.get('restdb')
+database = restdb_credentials['database']
+collection = restdb_credentials['collection']
 
 headers = {
     "content-type": "application/json",
-    "x-apikey": apikey,
+    "x-apikey": restdb_credentials['apikey'],
     "cache-control": "no-cache",
 }
 
@@ -214,25 +221,36 @@ class OxygenForm(FormAction):
             dispatcher.utter_message(template="utter_wrong_size")
             return {"oxygen_size": None}
 
+    def getvalue(self, tracker, key):
+        values = tracker.get_slot(key)
+        if values:
+            return values[0]
+
     def submit(self, dispatcher, tracker, domain):
         dispatcher.utter_message(template="utter_submit")
         url = 'https://{}.restdb.io/rest/{}'.format(database, collection)
-        oxygen_size = tracker.get_slot('oxygen_size')
-        oxygen_kind = tracker.get_slot('oxygen_kind')
-        partno = tracker.get_slot('partno')
+        print(url)
+        oxygen_size = self.getvalue(tracker, 'oxygen_size')
+        oxygen_kind = self.getvalue(tracker, 'oxygen_kind')
+        partno = self.getvalue(tracker, 'partno')
         if oxygen_size:
-            q = {'description' : oxygen_size}
+            q = {'size' : oxygen_size}
         elif oxygen_kind:
-            q = {'description' : oxygen_kind}
+            q = {'type' : oxygen_kind}
         elif partno:
             q = {'partno': partno}
         print("query: {}".format(q))
-        result = requests.get(url, data={'q': json.dumps(q)}, headers=headers)
-        if result.status_code == HTTPStatus.OK:
-            print(result.text)
-            return [Slotset(result.text)]
-        else:
-            print('{}: {}'.format(result.status_code, result.reason))
-            return []
+        response = requests.get(url, params={'q': json.dumps(q)}, headers=headers)
+        results = []
 
-        return []
+        if response.status_code == HTTPStatus.OK:
+            print(response.text)
+            data = json.loads(response.text)
+            if data:
+                for key, value in data[0].items():
+                    ss = SlotSet(key, value)
+                    print(ss)
+                    results.append(ss)
+        else:
+            print('{}: {}'.format(response.status_code, response.reason))
+        return results
