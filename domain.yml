@@ -6,10 +6,16 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - buy_oxygen
+  - size
+  - kind
+  - size_kind
   - explain_oxygen: {triggers: action_explain_oxygen}
   - explain_concentrator: {triggers: action_explain_concentrator}
   - explain_tank: {triggers: action_explain_tank}
   - explain_why: {triggers: action_explain_why}
+  - explain_size: {triggers: action_explain_size}
+  - explain_difference: {triggers: action_explain_difference}
 
 responses:
   utter_greet:
@@ -35,19 +41,52 @@ responses:
   - text: "Oxygen is a colorless, odorless gas that makes up about one fifth of the atmosphere.  It is used by living things to create energy from food.  You need oxygen to live."
 
   utter_concentrator_explanation:
-  - text: "An oxygen concentrator is a device that uses a device known as a “sieve bed” that has different affinity for oxygen at different pressures, along with a pump to pressurize it, to collect oxygen from the atmosphere and concentrate it to deliver more oxygen than is present in the atmosphere.  It allows patients to have supplemental oxygen without requiring prefilled oxygen tanks."
+  - text: "An oxygen concentrator is a device that uses a device known as a “sieve bed” that has different affinity for oxygen at different pressures, along with a pump to pressurize it, to collect oxygen from the atmosphere and concentrate it to deliver more oxygen than is present in the atmosphere.  It allows patients to have supplemental oxygen without requiring prefilled oxygen tanks.  Some concentrators are portable, allowing the patient to go outside and travel."
 
   utter_tank_explanation:
-  - text: "An oxygen tank is simply a container for oxygen.  The oxygen is stored under pressure, so a small tank can contain a large amount of oxygen.  A regulator allows the oxygen to be extracted from the tank at a lower, controlled pressure."
+  - text: "An oxygen cylinder (or tank) is simply a container for oxygen.  The oxygen is stored under pressure, so a small cylinder can contain a large amount of oxygen.  A regulator allows the oxygen to be extracted from the cylinder at a safe, controlled pressure.  Some cylinder are small and portable, and there are carts available to bring oxygen cylinders with you if you want to leave your house."
 
   utter_why_explanation:
   - text: "Some conditions reduce a person's ability to use oxygen from the air, causing their bodies to have to work harder and accomplish less.  Supplemental oxygen allows them to have improved health, activity levels, and alertness.  The oxygen can come from tanks or a concentrator, then tubing routes it to you, where a cannula in your nose allows you to breathe normally and get your supplemental oxygen without having to do or learn anything special."
+
+  utter_cylinder_size_explanation:
+  - text: "Cylinders come in different sizes.  The smaller ones are lighter and cheaper, but hold less oxygen and need to be exchanged and refilled more often.  The larger ones are more bulky, heavy, and expensive, but do not need to be exchanged or filled as frequently.  A popular small cylinder size is a “B” or ”M6” tank (those are two terms for the same size).  The small cylinders are normally used for ”pulse dose” systems.  The usual large one is an ”E” tank, which holds enough oxygen for 5 hours of use at 2 liters per minute."
+  utter_concentrator_size_explanation:
+  - text: "Some concentrators are large heavy units that normally are placed in one location and left there.  A length of tubing runs from the concentrator, allowing the user to move around freely.  Smaller concentrators are portable and can be taken with you anywhere you go, but the portable ones are expensive and may not be covered by insurance."
+
+  utter_ask_oxygen_kind:
+  - text: "What kind of oxygen?  Cylinders (tanks), or an oxygen concentrator?"
+
+  utter_ask_oxygen_size:
+  - text: "What size?"
+
+forms:
+  - oxygen_form
+
+entities:
+  - oxygen_kind
+  - oxygen_size
+
+slots:
+  oxygen_kind:
+    type: unfeaturized
+    auto_fill: false
+  oxygen_size:
+    type: unfeaturized
+    auto_fill: false
+  partno:
+    type: unfeaturized
+    auto_fill: false
+  requested_slot:
+    type: unfeaturized
 
 actions:
   - action_explain_oxygen
   - action_explain_concentrator
   - action_explain_tank
   - action_explain_why
+  - action_explain_size
+  - action_explain_difference
 
 session_config:
   session_expiration_time: 60
