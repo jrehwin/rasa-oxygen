@@ -3,6 +3,7 @@
 language: en
 pipeline:
 - name: "WhitespaceTokenizer"
+  intent_split_symbol: "_"
 - name: "RegexFeaturizer"
 - name: "CRFEntityExtractor"
 - name: "EntitySynonymMapper"
@@ -13,6 +14,7 @@ pipeline:
   max_ngram: 4
 - name: "DIETClassifier"
   epochs: 300
+#- name: "ResponseSelector"
 
 # Configuration for Rasa Core.
 # https://rasa.com/docs/rasa/core/policies/

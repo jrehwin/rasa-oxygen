@@ -55,12 +55,12 @@
 - am I talking to a bot?
 - am I talking to a human?
 
-## intent:explain_oxygen
+## intent: explain_oxygen
 - What is oxygen?
 - What does oxygen do?
 - What am I breathing?
 
-## intent:explain_difference
+## intent: explain_difference
 - what is the difference between tanks and concentrators
 - what is a concentrator vs a cylinder
 - why would I want one over the other
@@ -70,13 +70,13 @@
 - which lets me go outside
 - what are tanks and concentrators
 
-## intent:explain_concentrator
+## intent: explain_concentrator
 - What is an oxygen concentrator?
 - What does an oxygen concentrator do?
 - Why does my concentrator make that noise?
 - How does the concentrator make oxygen?
 
-## intent:explain_tank
+## intent: explain_tank
 - What is an oxygen tank?
 - What's in the tank?
 - What do the tanks do?
@@ -86,14 +86,14 @@
 - What is a toggle valve?
 - What are these tanks?
 
-## intent:explain_why
+## intent: explain_why
 - Why do doctors prescribe oxygen therapy?
 - Why do I need oxygen?
 - Why do I need these things in my nose?
 - What is a cannula?
 - What is all this tubing?
 
-## intent:explain_size
+## intent: explain_size
 - What sizes are there?
 - What different kinds of [cylinders](oxygen_kind) are available?
 - What are the different kinds of [tanks](oxygen_kind)?

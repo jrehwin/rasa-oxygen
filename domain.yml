@@ -16,6 +16,7 @@ intents:
   - explain_why: {triggers: action_explain_why}
   - explain_size: {triggers: action_explain_size}
   - explain_difference: {triggers: action_explain_difference}
+  #- explain {triggers: respond_explain}
 
 responses:
   utter_greet:
@@ -87,6 +88,7 @@ actions:
   - action_explain_why
   - action_explain_size
   - action_explain_difference
+  #- action_explain
 
 session_config:
   session_expiration_time: 60
